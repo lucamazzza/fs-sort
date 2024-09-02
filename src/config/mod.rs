@@ -1,7 +1,10 @@
 use serde::{Deserialize, Serialize};
-use std::{fs, io, path::Path};
+use core::str;
+use std::fs;
 
-pub const CONFIG_FILE_PATH: &str = r#"~/.config/fs-sort.toml"#;
+use crate::{utils, utils::path_exists};
+
+pub const CONFIG_FILE_PATH: &str = "~/.config/fssort.toml";
 
 pub type FilePath = String;
 
@@ -11,7 +14,7 @@ pub trait Config {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ConfigFile { // TODO: Define single structures for each section of the config
+pub struct ConfigFile {
     basedir: FilePath,
     file_types: FileTypes,
     security: Security,
@@ -48,23 +51,24 @@ fn ser(config: ConfigFile) -> String {
 fn des(config: String) -> ConfigFile {
     toml::from_str(config.as_str().as_ref()).unwrap()
 }
-
-fn path_exists(path: &mut FilePath) -> bool {
-    Path::new(path).exists()
-}
-
 fn read_config_file(path: &mut FilePath) -> Result<String, &'static str> {
-    if !path_exists(path) { return Err("File not found") }
-    let file_content = fs::read_to_string(path)
-        .expect("Unable to read configuration file");
+    if !path_exists(path) {
+        return Err("File not found");
+    }
+    let file_content = fs::read_to_string(path).expect("Unable to read configuration file");
     Ok(file_content)
 }
 
-pub fn toml_string_as_config(path: &mut FilePath) -> Result<ConfigFile, String> {
+pub fn parse_toml_file(path: &mut FilePath) -> Result<ConfigFile, &'static str> {
     let file_content = read_config_file(path).unwrap();
     if file_content.is_empty() {
-        return Err("Config file is empty".to_string())
+        return Err("Config file is empty");
     }
     let config: ConfigFile = des(file_content);
     Ok(config)
+}
+
+pub fn write_config_file(config: ConfigFile) -> Result<(), &'static str> {
+    let config_file_path: &mut FilePath = &mut (CONFIG_FILE_PATH.to_string() as FilePath);
+    Ok(utils::write_file(config_file_path, ser(config))?) 
 }
