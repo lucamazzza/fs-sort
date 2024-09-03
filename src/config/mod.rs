@@ -8,39 +8,33 @@ pub const CONFIG_FILE_PATH: &str = "~/.config/fssort.toml";
 
 pub type FilePath = String;
 
-pub trait Config {
-    fn get_basedir(&self) -> FilePath;
-    fn get_file_types(&self) -> FileTypes;
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ConfigFile {
     basedir: FilePath,
-    file_types: FileTypes,
-    security: Security,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FileTypes {
-    folderized: Vec<String>,
-    ignored: Vec<String>,
-    excluded: Vec<String>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Security {
+    folderized_filetypes: Vec<String>,
+    ignored_filetypes: Vec<String>,
+    excluded_filetypes: Vec<String>,
     journaled: Option<bool>,
     journal_location: Option<String>,
     backup: Option<bool>,
     backup_location: Option<String>,
 }
 
-impl Config for ConfigFile {
-    fn get_basedir(&self) -> FilePath {
+impl ConfigFile {
+    pub fn get_basedir(&self) -> FilePath {
         self.basedir.clone()
     }
-    fn get_file_types(&self) -> FileTypes {
-        self.file_types.clone()
+
+    pub fn get_folderized_filetypes(&self) -> Vec<String> {
+        self.folderized_filetypes.clone()
+    }
+
+    pub fn get_ignored_filetypes(&self) -> Vec<String> {
+        self.ignored_filetypes.clone()
+    }
+
+    pub fn get_excluded_filetypes(&self) -> Vec<String> {
+        self.excluded_filetypes.clone()
     }
 }
 
@@ -51,6 +45,7 @@ fn ser(config: ConfigFile) -> String {
 fn des(config: String) -> ConfigFile {
     toml::from_str(config.as_str().as_ref()).unwrap()
 }
+
 fn read_config_file(path: &mut FilePath) -> Result<String, &'static str> {
     if !path_exists(path) {
         return Err("File not found");
