@@ -1,4 +1,4 @@
-use crate::config::{Config, ConfigFile};
+use crate::config::ConfigFile;
 
 pub fn get_basedir_validated(conf: ConfigFile) -> Result<String, &'static str> {
     let basedir = conf.get_basedir();
