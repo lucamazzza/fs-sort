@@ -11,20 +11,6 @@ mod config;
 mod filevalidator;
 mod utils;
 
-fn help() {
-    let help_string = r#"
-    fs-sort version 0.0.1
-    (C) 2024-2025 Luca Mazza. (C) 2024-2025 Filippo De Simoni.
-    Released under MIT License.
-
-    Parameters:
-     * init                  initializes the config file to the default one;
-     * reindex               reindexes all files managed by fs-sort (reorders them);
-     * ...
-    "#;
-    println!("{}", help_string);
-}
-
 fn async_watcher() -> notify::Result<(RecommendedWatcher, Receiver<notify::Result<Event>>)> {
     let (mut tx, rx) = channel(1);
     let watcher = RecommendedWatcher::new(
@@ -55,10 +41,9 @@ fn main() {
     match args.len() {
         1 => {
             let arg0 = args.get(0).unwrap();
-            match arg0.as_str() {
-                // "init" => config::init(),
-                // "reindex" => algo::reindex(),
-                "help" => help(),
+            match arg0 {
+                "init" => config::init(),
+                "reindex" => algo::reindex(),
                 _ => {
                     println!("Invalid argument \"{:?}\"", arg0);
                     help()
@@ -70,7 +55,7 @@ fn main() {
             let arg1 = args.get(1).unwrap();
         },
         _ => {
-            println!("Command not found");
+            println!("Command not found")
             help();
         },
     }
@@ -79,7 +64,7 @@ fn main() {
         println!("Config file not found at {:?}", CONFIG_FILE_PATH);
         exit(1)
     }
-    // let config: ConfigFile = config::parse_toml_file(config_file_path).unwrap();
+    let config: ConfigFile = config::parse_toml_file(config_file_path).unwrap();
     futures::executor::block_on(async {
         if let Err(e) = async_watch("/Users/lucamazza").await {
             println!("error: {:?}", e)
