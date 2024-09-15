@@ -19,9 +19,7 @@ There aren't any sponsor yet, be the first one!
 
 ## Installation
 
-### Linux
-
-### MacOS
+### Linux & MacOS
 
 ### Windows
 
