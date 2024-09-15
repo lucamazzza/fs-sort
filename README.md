@@ -15,7 +15,7 @@ fs-sort is fully configurable and runs without ever you noticing.
 
 * 📦 **Portable** - Easy to install and shareable to your other machines only through the config file;
 * ⚡️ **Blazingly Fast** - fs-sort is developed in Rust, giving it swiftness superpowers;
-* 🛠️ **Customizeable** - you can define every bit of your filesystem automation in one single config file;
+* 🛠️ **Customisable** - you can define every bit of your filesystem automation in one single config file;
 
 ## Sponsors
 
