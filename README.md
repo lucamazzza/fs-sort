@@ -1,6 +1,7 @@
 # fs-sort
 > fess' e sorrt'
 
+[![Build](https://img.shields.io/github/actions/workflow/status/lucamazzza/fs-sort/rust.yml?style=for-the-badge)](https://github.com/lucamazzza/fs-sort/actions/workflows/rust.yml)
 [![GitHub release](https://img.shields.io/github/v/release/lucamazzza/fs-sort?color=green&label=latest%20release&sort=semver&style=for-the-badge)](https://github.com/lucamazzza/fs-sort/releases/latest)
 [![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
