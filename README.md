@@ -1,7 +1,7 @@
 # fs-sort
 > fɛsː‿e‿sːɔrːt
-> 
-[![GitHub stars](https://img.shields.io/github/stars/lucamazzza/fs-sort.svg?label=Stars&logo=github&style=for-the-badge)](https://github.com/lucamazzza/fs-sort)
+
+[![GitHub stars](https://img.shields.io/github/stars/lucamazzza/fs-sort?label=Stars&logo=github&style=for-the-badge)](https://github.com/lucamazzza/fs-sort)
 [![GitHub forks](https://img.shields.io/github/forks/lucamazzza/fs-sort.svg?label=Forks&logo=github&style=for-the-badge)](https://github.com/lucamazzza/fs-sort)
 [![Build](https://img.shields.io/github/actions/workflow/status/lucamazzza/fs-sort/rust.yml?style=for-the-badge)](https://github.com/lucamazzza/fs-sort/actions/workflows/rust.yml)
 [![GitHub release](https://img.shields.io/github/v/release/lucamazzza/fs-sort?color=green&label=latest%20release&sort=semver&style=for-the-badge)](https://github.com/lucamazzza/fs-sort/releases/latest)
