@@ -10,11 +10,12 @@ mod cli;
 mod config;
 mod filevalidator;
 mod utils;
+mod cnst;
 
 fn help() {
     let help_string = r#"
     fs-sort version 0.0.1
-    (C) 2024-2025 Luca Mazza. (C) 2024-2025 Filippo De Simoni.
+    (C) 2024-2025 Luca Mazza. 
     Released under MIT License.
 
     Parameters:
@@ -50,36 +51,47 @@ async fn async_watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
     Ok(())
 }
 
-fn main() {
-    let args: Vec<_> = env::args().collect();
-    match args.len() {
-        1 => {
-            let arg0 = args.get(0).unwrap();
-            match arg0.as_str() {
-                // "init" => config::init(),
-                // "reindex" => algo::reindex(),
-                "help" => help(),
-                _ => {
-                    println!("Invalid argument \"{:?}\"", arg0);
-                    help()
-                }
-            }
-        },
-        2 => {
-            let arg0 = args.get(0).unwrap();
-            let arg1 = args.get(1).unwrap();
-        },
+fn one_arg(arg0: &str) {
+    match arg0 {
+        // "init" => config::init(),
+        // "reindex" => algo::reindex(),
+        "help" => help(),
         _ => {
-            println!("Command not found");
+            println!("Invalid parameter '{:?}'", arg0);
             help();
         },
     }
+}
+
+fn two_arg(arg0: &str, arg1: &str) {
+    match (arg0, arg1) {
+        // ("arg0", "arg1") => help(),
+        _ => {
+            println!("Invalid parameters '{:?} {:?}'", arg0, arg1);
+            help();
+        },
+    }
+}
+
+fn execute_args(args: Vec<String>) {
+    match args.len() {
+        1 => one_arg(args.get(0).unwrap().as_str()),
+        2 => two_arg(args.get(0).unwrap().as_str(), args.get(1).unwrap().as_str()),
+        _ => {
+            println!("Command fssort does not accept more than {:?} parameters", cnst::MAX_CLI_ARGS);
+        },
+    }
+}
+
+fn main() {
+    let args: Vec<_> = env::args().collect();
     let config_file_path: &mut FilePath = &mut ("/Users/lucamazza/.config/fssort.toml".to_string() as FilePath);
     if !path_exists(config_file_path) {
         println!("Config file not found at {:?}", CONFIG_FILE_PATH);
         exit(1)
     }
     // let config: ConfigFile = config::parse_toml_file(config_file_path).unwrap();
+    execute_args(args);
     futures::executor::block_on(async {
         if let Err(e) = async_watch("/Users/lucamazza").await {
             println!("error: {:?}", e)
